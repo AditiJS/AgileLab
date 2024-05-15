@@ -4,7 +4,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 // Clone the repository containing the HTML code
-                git 'hhttps://github.com/AditiJS/AgileLab'
+                git 'https://github.com/AditiJS/AgileLab'
             }
         }
         stage('Build') {
