@@ -1,10 +1,12 @@
 pipeline {
     agent any
+    environment {
+        GITHUB_TOKEN = credentials('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')
+    }
     stages {
         stage('Checkout') {
             steps {
-                // Clone the repository containing the HTML code
-                git 'https://github.com/your-username/your-repo.git'
+                git 'https://github.com/AditiJS/AgileLab'
             }
         }
         stage('Build') {
@@ -21,14 +23,25 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                // Copy the HTML file to the deployment directory
-                sh 'cp app.html /var/www/html/'
+                script {
+                    sh '''
+                    # Configuring Git
+                    git config --global user.email "workspaceaditi832@gmail.com"
+                    git config --global user.name "AditiJS"
+                    
+                    # Deploy to GitHub Pages
+                    git remote set-url origin https://${GITHUB_TOKEN}@github.com/AditiJS/AgileLab.git
+                    git checkout -b gh-pages
+                    git add .
+                    git commit -m "Deploy to GitHub Pages"
+                    git push origin gh-pages --force
+                    '''
+                }
             }
         }
     }
     post {
         always {
-            // Clean up workspace
             cleanWs()
         }
     }
